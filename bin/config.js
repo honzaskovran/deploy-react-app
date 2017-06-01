@@ -13,4 +13,17 @@ const saveConfig = (json) => {
   })
 };
 
+const getConfig = () => {
+  try {
+    return JSON.parse(fs.readFileSync(CONFIG_FILE_NAME, 'utf8'));
+  } catch (err) {
+    if(err.code === 'ENOENT') {
+      return false
+    } else {
+      throw err;
+    }
+  }
+};
+
 exports.saveConfig = saveConfig;
+exports.getConfig = getConfig;
