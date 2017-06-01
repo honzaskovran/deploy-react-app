@@ -2,6 +2,7 @@
 'use strict';
 
 const inquirer = require('inquirer');
+const saveConfig = require('./config').saveConfig;
 
 const validateString = (value) => value !== '';
 
@@ -39,6 +40,6 @@ const questions = [
 
 exports.default = () => {
   inquirer.prompt(questions).then(answers => {
-    console.log(answers);
+    saveConfig(answers);
   });
 };
