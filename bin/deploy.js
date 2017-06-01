@@ -5,6 +5,10 @@ const getConfig = require('./config').getConfig;
 const shell = require('shelljs');
 const BUILD_COMMAND = 'yarn build';
 
+const createDeployCommand = ({server, username, path, port}) => {
+  return `scp -P ${port} -r build ${username}@${server}:${path}`;
+};
+
 exports.default = () => {
   const config = getConfig();
   if(!config) {
@@ -13,7 +17,13 @@ exports.default = () => {
   }
 
   if(shell.exec(BUILD_COMMAND).code !== 0) {
-    console.error('error');
+    console.error('Build failed');
     shell.exit(1);
   }
+
+  if(shell.exec(createDeployCommand(config)).code !== 0) {
+    console.error('Deployment failed');
+    shell.exit(1);
+  }
+  console.info('Deployed :)')
 };
